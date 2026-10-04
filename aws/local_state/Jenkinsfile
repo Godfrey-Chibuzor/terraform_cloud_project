@@ -1,32 +1,31 @@
-```groovy
 pipeline {
-    agent any
+agent any
 
-    stages {
+stages {
 
-        stage('Terraform Init') {
-            steps {
-                dir('aws/local_state') {
-                    sh 'terraform init'
-                }
+    stage('Terraform Init') {
+        steps {
+            dir('aws/local_state') {
+                sh 'terraform init'
             }
         }
+    }
 
-        stage('Terraform Plan') {
-            steps {
-                dir('aws/local_state') {
-                    sh 'terraform plan'
-                }
+    stage('Terraform Plan') {
+        steps {
+            dir('aws/local_state') {
+                sh 'terraform plan'
             }
         }
+    }
 
-        stage('Terraform Apply') {
-            steps {
-                dir('aws/local_state') {
-                    sh 'terraform apply -auto-approve'
-                }
+    stage('Terraform Apply') {
+        steps {
+            dir('aws/local_state') {
+                sh 'terraform apply -auto-approve'
             }
         }
     }
 }
-```
+
+}

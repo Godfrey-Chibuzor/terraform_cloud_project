@@ -1,4 +1,10 @@
-steps {
+pipeline {
+    agent any
+
+    stages {
+
+        stage('Terraform Init') {
+            steps {
                 dir('aws/local_state') {
                     withCredentials([
                         [$class: 'AmazonWebServicesCredentialsBinding',
@@ -37,3 +43,4 @@ steps {
         }
     }
 }
+```

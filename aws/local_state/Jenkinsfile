@@ -1,31 +1,39 @@
-pipeline {
-agent any
+steps {
+                dir('aws/local_state') {
+                    withCredentials([
+                        [$class: 'AmazonWebServicesCredentialsBinding',
+                         credentialsId: 'terraform-aws']
+                    ]) {
+                        sh 'terraform init'
+                    }
+                }
+            }
+        }
 
-stages {
+        stage('Terraform Plan') {
+            steps {
+                dir('aws/local_state') {
+                    withCredentials([
+                        [$class: 'AmazonWebServicesCredentialsBinding',
+                         credentialsId: 'terraform-aws']
+                    ]) {
+                        sh 'terraform plan'
+                    }
+                }
+            }
+        }
 
-    stage('Terraform Init') {
-        steps {
-            dir('aws/local_state') {
-                sh 'terraform init'
+        stage('Terraform Apply') {
+            steps {
+                dir('aws/local_state') {
+                    withCredentials([
+                        [$class: 'AmazonWebServicesCredentialsBinding',
+                         credentialsId: 'terraform-aws']
+                    ]) {
+                        sh 'terraform apply -auto-approve'
+                    }
+                }
             }
         }
     }
-
-    stage('Terraform Plan') {
-        steps {
-            dir('aws/local_state') {
-                sh 'terraform plan'
-            }
-        }
-    }
-
-    stage('Terraform Apply') {
-        steps {
-            dir('aws/local_state') {
-                sh 'terraform apply -auto-approve'
-            }
-        }
-    }
-}
-
 }
